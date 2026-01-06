@@ -17,17 +17,36 @@ export type Level = {
 
 const PROBLEMS_PER_LEVEL = 10;
 
+const DEFAULT_LEVELS: Level[] = [
+  { id: 1, title: 'Уровень 1', isUnlocked: true, isCompleted: false, range: [1, 3] },
+  { id: 2, title: 'Уровень 2', isUnlocked: false, isCompleted: false, range: [1, 5] },
+  { id: 3, title: 'Уровень 3', isUnlocked: false, isCompleted: false, range: [2, 7] },
+  { id: 4, title: 'Уровень 4', isUnlocked: false, isCompleted: false, range: [2, 9] },
+  { id: 5, title: 'Уровень 5', isUnlocked: false, isCompleted: false, range: [3, 10] },
+  { id: 6, title: 'Уровень 6', isUnlocked: false, isCompleted: false, range: [5, 12] },
+  { id: 7, title: 'Уровень 7', isUnlocked: false, isCompleted: false, range: [8, 15] },
+  { id: 8, title: 'Уровень 8', isUnlocked: false, isCompleted: false, range: [10, 18] },
+  { id: 9, title: 'Уровень 9', isUnlocked: false, isCompleted: false, range: [12, 20] },
+  { id: 10, title: 'Уровень 10', isUnlocked: false, isCompleted: false, range: [1, 20] },
+];
+
 export function useMathTrainer() {
+  const [userProfile, setUserProfile] = useState(() => {
+    const saved = localStorage.getItem('math-dojo-profile');
+    if (saved) return JSON.parse(saved);
+    return {
+      totalXp: 0,
+      levelsCompleted: 0,
+      accuracy: 0,
+      totalQuestions: 0,
+      correctQuestions: 0
+    };
+  });
+
   const [levels, setLevels] = useState<Level[]>(() => {
     const saved = localStorage.getItem('math-dojo-levels');
     if (saved) return JSON.parse(saved);
-    return Array.from({ length: 10 }, (_, i) => ({
-      id: i + 1,
-      title: `Уровень ${i + 1}`,
-      isUnlocked: i === 0,
-      isCompleted: false,
-      range: [1, 9]
-    }));
+    return DEFAULT_LEVELS;
   });
 
   const [currentLevelId, setCurrentLevelId] = useState<number | null>(null);
@@ -41,6 +60,10 @@ export function useMathTrainer() {
   useEffect(() => {
     localStorage.setItem('math-dojo-levels', JSON.stringify(levels));
   }, [levels]);
+
+  useEffect(() => {
+    localStorage.setItem('math-dojo-profile', JSON.stringify(userProfile));
+  }, [userProfile]);
 
   const startLevel = useCallback((levelId: number) => {
     const level = levels.find(l => l.id === levelId);
@@ -64,6 +87,21 @@ export function useMathTrainer() {
   const completeLevel = useCallback(() => {
     if (!currentLevelId) return;
     
+    const xpGained = stats.correct * 10;
+    
+    setUserProfile(prev => {
+      const newTotalQuestions = prev.totalQuestions + stats.total;
+      const newCorrectQuestions = prev.correctQuestions + stats.correct;
+      return {
+        ...prev,
+        totalXp: prev.totalXp + xpGained,
+        levelsCompleted: prev.levelsCompleted + 1,
+        totalQuestions: newTotalQuestions,
+        correctQuestions: newCorrectQuestions,
+        accuracy: Math.round((newCorrectQuestions / newTotalQuestions) * 100)
+      };
+    });
+
     setLevels(prev => prev.map(l => {
       if (l.id === currentLevelId) return { ...l, isCompleted: true };
       if (l.id === currentLevelId + 1) return { ...l, isUnlocked: true };
@@ -77,7 +115,7 @@ export function useMathTrainer() {
       spread: 70,
       origin: { y: 0.6 }
     });
-  }, [currentLevelId]);
+  }, [currentLevelId, stats]);
 
   const checkAnswer = useCallback(() => {
     if (!currentProblem || feedback !== 'none') return;
@@ -135,6 +173,7 @@ export function useMathTrainer() {
 
   return {
     levels,
+    userProfile,
     currentLevelId,
     currentProblem,
     feedback,

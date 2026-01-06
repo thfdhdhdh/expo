@@ -2,13 +2,14 @@ import { useMathTrainer } from '@/lib/math-engine';
 import { NumberInput } from '@/components/ui/number-input';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Check, Trophy, Star, ArrowRight, Lock, ChevronLeft } from 'lucide-react';
+import { Check, Trophy, Star, ArrowRight, Lock, ChevronLeft, User, BarChart3, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Home() {
   const { 
     levels,
+    userProfile,
     currentLevelId,
     currentProblem, 
     feedback, 
@@ -23,6 +24,7 @@ export default function Home() {
     totalInLevel 
   } = useMathTrainer();
   
+  const [showProfile, setShowProfile] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -31,13 +33,78 @@ export default function Home() {
     }
   }, [feedback, currentProblem, isLevelCompleted, currentLevelId]);
 
+  if (showProfile) {
+    return (
+      <div className="min-h-screen bg-muted/30 p-4 md:p-8 font-sans">
+        <div className="max-w-md mx-auto">
+          <header className="flex items-center gap-4 mb-8">
+            <Button variant="ghost" size="icon" onClick={() => setShowProfile(false)} className="rounded-full">
+              <ChevronLeft className="w-6 h-6" />
+            </Button>
+            <h1 className="text-2xl font-display font-bold">Профиль</h1>
+          </header>
+
+          <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border-b-8 border-border/10 mb-6 text-center">
+            <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <User className="w-12 h-12 text-primary" />
+            </div>
+            <h2 className="text-3xl font-display font-bold mb-1">Ученик</h2>
+            <div className="flex items-center justify-center gap-2 text-accent-foreground font-bold bg-accent/10 px-4 py-1 rounded-full w-fit mx-auto">
+              <Star className="w-4 h-4 fill-accent text-accent" />
+              <span>{userProfile.totalXp} XP</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="bg-white p-6 rounded-3xl border-b-4 border-border/10 flex flex-col items-center">
+              <Zap className="w-8 h-8 text-primary mb-2" />
+              <div className="text-2xl font-display font-bold">{userProfile.levelsCompleted}</div>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Уровней</div>
+            </div>
+            <div className="bg-white p-6 rounded-3xl border-b-4 border-border/10 flex flex-col items-center">
+              <BarChart3 className="w-8 h-8 text-success mb-2" />
+              <div className="text-2xl font-display font-bold">{userProfile.accuracy}%</div>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Точность</div>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-3xl border-b-4 border-border/10">
+            <h3 className="text-lg font-display font-bold mb-4 flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-accent" />
+              Статистика
+            </h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground font-medium">Всего ответов</span>
+                <span className="font-bold">{userProfile.totalQuestions}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground font-medium">Верных ответов</span>
+                <span className="font-bold text-success">{userProfile.correctQuestions}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (currentLevelId === null) {
     return (
       <div className="min-h-screen bg-muted/30 p-8 font-sans">
         <div className="max-w-2xl mx-auto">
-          <header className="mb-12 text-center">
-            <h1 className="text-5xl font-display font-bold text-foreground mb-4">Математическое Додзё</h1>
-            <p className="text-muted-foreground text-xl">Выбери уровень, чтобы начать тренировку</p>
+          <header className="mb-12 flex justify-between items-center">
+            <div className="text-left">
+              <h1 className="text-4xl font-display font-bold text-foreground">Додзё</h1>
+              <p className="text-muted-foreground">Выбери свой путь</p>
+            </div>
+            <Button 
+              variant="outline" 
+              className="rounded-2xl h-14 w-14 p-0 border-b-4 border-border shadow-sm bg-white"
+              onClick={() => setShowProfile(true)}
+            >
+              <User className="w-6 h-6 text-primary" />
+            </Button>
           </header>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -67,12 +134,10 @@ export default function Home() {
                     <Lock className="w-8 h-8 text-muted-foreground" />
                   )}
                 </div>
-                <span className="font-display font-bold text-xl">{level.title}</span>
-                {level.isCompleted && (
-                  <div className="absolute top-4 right-4 bg-success text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase">
-                    Пройдено
-                  </div>
-                )}
+                <div className="text-center">
+                  <span className="font-display font-bold text-lg block">{level.title}</span>
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase">До {level.range[1]}</span>
+                </div>
               </motion.button>
             ))}
           </div>
@@ -98,11 +163,6 @@ export default function Home() {
             >
               <Trophy className="w-20 h-20 text-accent" />
             </motion.div>
-            <motion.div 
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute -inset-4 border-4 border-dashed border-accent/20 rounded-full"
-            />
           </div>
 
           <h1 className="text-4xl font-display font-bold text-foreground mb-2">Уровень пройден!</h1>
