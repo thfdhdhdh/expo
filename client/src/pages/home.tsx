@@ -127,7 +127,8 @@ export default function Home() {
                 )}
 
                 <motion.button
-                  whileTap={level.isUnlocked ? { scale: 0.95 } : {}}
+                  whileHover={level.isUnlocked ? { y: 4 } : {}}
+                  whileTap={level.isUnlocked ? { y: 6 } : {}}
                   onClick={() => startLevel(level.id)}
                   disabled={!level.isUnlocked}
                   className={`
@@ -139,9 +140,8 @@ export default function Home() {
                       : 'level-dot-locked'}
                   `}
                 >
-                  {/* Glossy highlight effect on circles */}
-                  {level.isUnlocked && (
-                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[60%] h-3 bg-white/20 rounded-full pointer-events-none" />
+                  {level.type === 'exercise' && (
+                    level.isCompleted ? <Check className="w-8 h-8" strokeWidth={5} /> : <Star className="w-8 h-8 fill-current" />
                   )}
 
                   {level.type === 'exercise' && (

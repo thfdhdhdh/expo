@@ -6,7 +6,6 @@
 @theme inline {
   --radius-sm: 0.75rem;
   --radius-md: 1rem;
-  --radius-lg: 1.5rem;
   --radius-xl: 2rem;
 
   --color-background: hsl(var(--background));
@@ -88,14 +87,18 @@
 }
 
 @layer utilities {
-  /* Duolingo 1:1 Button Styles */
   .btn-3d-base {
     @apply relative inline-flex items-center justify-center font-bold uppercase tracking-widest transition-all duration-75 outline-none cursor-pointer select-none border-none;
     transform: translateZ(0);
   }
 
-  .btn-3d-base:active {
+  /* Interaction on HOVER as requested */
+  .btn-3d-base:hover {
     transform: translateY(4px);
+  }
+  
+  .btn-3d-base:active {
+    transform: translateY(6px);
   }
 
   /* Macaw (Blue) */
@@ -104,11 +107,11 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-macaw-dark));
   }
-  .btn-macaw:active {
+  .btn-macaw:hover {
     box-shadow: 0 0px 0 0 rgb(var(--color-macaw-dark));
   }
-  .btn-macaw:hover:not(:active) {
-    filter: brightness(1.1);
+  .btn-macaw:active {
+    box-shadow: 0 -2px 0 0 rgb(var(--color-macaw-dark));
   }
 
   /* Tree Frog (Green) */
@@ -117,11 +120,11 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-tree-frog-dark));
   }
-  .btn-tree-frog:active {
+  .btn-tree-frog:hover {
     box-shadow: 0 0px 0 0 rgb(var(--color-tree-frog-dark));
   }
-  .btn-tree-frog:hover:not(:active) {
-    filter: brightness(1.1);
+  .btn-tree-frog:active {
+    box-shadow: 0 -2px 0 0 rgb(var(--color-tree-frog-dark));
   }
 
   /* Fire Ant (Red) */
@@ -130,11 +133,11 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-fire-ant-dark));
   }
-  .btn-fire-ant:active {
+  .btn-fire-ant:hover {
     box-shadow: 0 0px 0 0 rgb(var(--color-fire-ant-dark));
   }
-  .btn-fire-ant:hover:not(:active) {
-    filter: brightness(1.1);
+  .btn-fire-ant:active {
+    box-shadow: 0 -2px 0 0 rgb(var(--color-fire-ant-dark));
   }
 
   /* Level Dots (Circles) */
@@ -146,18 +149,26 @@
     background-color: rgb(var(--color-macaw));
     box-shadow: 0 8px 0 0 rgb(var(--color-macaw-dark));
   }
-  .level-dot-active:active {
+  .level-dot-active:hover {
     transform: translateY(4px);
     box-shadow: 0 4px 0 0 rgb(var(--color-macaw-dark));
+  }
+  .level-dot-active:active {
+    transform: translateY(6px);
+    box-shadow: 0 2px 0 0 rgb(var(--color-macaw-dark));
   }
 
   .level-dot-completed {
     background-color: rgb(var(--color-tree-frog));
     box-shadow: 0 8px 0 0 rgb(var(--color-tree-frog-dark));
   }
-  .level-dot-completed:active {
+  .level-dot-completed:hover {
     transform: translateY(4px);
     box-shadow: 0 4px 0 0 rgb(var(--color-tree-frog-dark));
+  }
+  .level-dot-completed:active {
+    transform: translateY(6px);
+    box-shadow: 0 2px 0 0 rgb(var(--color-tree-frog-dark));
   }
 
   .level-dot-locked {
