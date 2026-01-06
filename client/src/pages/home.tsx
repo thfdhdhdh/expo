@@ -127,7 +127,6 @@ export default function Home() {
                 )}
 
                 <motion.button
-                  whileHover={level.isUnlocked ? { y: 4 } : {}}
                   whileTap={level.isUnlocked ? { y: 6 } : {}}
                   onClick={() => startLevel(level.id)}
                   disabled={!level.isUnlocked}
@@ -140,10 +139,6 @@ export default function Home() {
                       : 'level-dot-locked'}
                   `}
                 >
-                  {level.type === 'exercise' && (
-                    level.isCompleted ? <Check className="w-8 h-8" strokeWidth={5} /> : <Star className="w-8 h-8 fill-current" />
-                  )}
-
                   {level.type === 'exercise' && (
                     level.isCompleted ? <Check className="w-8 h-8" strokeWidth={5} /> : <Star className="w-8 h-8 fill-current" />
                   )}

@@ -88,17 +88,13 @@
 
 @layer utilities {
   .btn-3d-base {
-    @apply relative inline-flex items-center justify-center font-bold uppercase tracking-widest transition-all duration-75 outline-none cursor-pointer select-none border-none;
+    @apply relative inline-flex items-center justify-center font-bold uppercase tracking-widest outline-none cursor-pointer select-none border-none;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
     transform: translateZ(0);
   }
 
-  /* Interaction on HOVER as requested */
-  .btn-3d-base:hover {
-    transform: translateY(4px);
-  }
-  
   .btn-3d-base:active {
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
 
   /* Macaw (Blue) */
@@ -107,11 +103,8 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-macaw-dark));
   }
-  .btn-macaw:hover {
-    box-shadow: 0 0px 0 0 rgb(var(--color-macaw-dark));
-  }
   .btn-macaw:active {
-    box-shadow: 0 -2px 0 0 rgb(var(--color-macaw-dark));
+    box-shadow: 0 0px 0 0 rgb(var(--color-macaw-dark));
   }
 
   /* Tree Frog (Green) */
@@ -120,11 +113,8 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-tree-frog-dark));
   }
-  .btn-tree-frog:hover {
-    box-shadow: 0 0px 0 0 rgb(var(--color-tree-frog-dark));
-  }
   .btn-tree-frog:active {
-    box-shadow: 0 -2px 0 0 rgb(var(--color-tree-frog-dark));
+    box-shadow: 0 0px 0 0 rgb(var(--color-tree-frog-dark));
   }
 
   /* Fire Ant (Red) */
@@ -133,25 +123,19 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-fire-ant-dark));
   }
-  .btn-fire-ant:hover {
-    box-shadow: 0 0px 0 0 rgb(var(--color-fire-ant-dark));
-  }
   .btn-fire-ant:active {
-    box-shadow: 0 -2px 0 0 rgb(var(--color-fire-ant-dark));
+    box-shadow: 0 0px 0 0 rgb(var(--color-fire-ant-dark));
   }
 
   /* Level Dots (Circles) */
   .level-dot {
-    @apply relative w-20 h-20 rounded-full flex items-center justify-center transition-all duration-75;
+    @apply relative w-20 h-20 rounded-full flex items-center justify-center;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
   }
 
   .level-dot-active {
     background-color: rgb(var(--color-macaw));
     box-shadow: 0 8px 0 0 rgb(var(--color-macaw-dark));
-  }
-  .level-dot-active:hover {
-    transform: translateY(4px);
-    box-shadow: 0 4px 0 0 rgb(var(--color-macaw-dark));
   }
   .level-dot-active:active {
     transform: translateY(6px);
@@ -161,10 +145,6 @@
   .level-dot-completed {
     background-color: rgb(var(--color-tree-frog));
     box-shadow: 0 8px 0 0 rgb(var(--color-tree-frog-dark));
-  }
-  .level-dot-completed:hover {
-    transform: translateY(4px);
-    box-shadow: 0 4px 0 0 rgb(var(--color-tree-frog-dark));
   }
   .level-dot-completed:active {
     transform: translateY(6px);
