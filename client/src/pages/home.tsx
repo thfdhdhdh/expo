@@ -2,7 +2,7 @@ import { useMathTrainer } from '@/lib/math-engine';
 import { NumberInput } from '@/components/ui/number-input';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Check, Trophy, Star, ArrowRight, Lock, ChevronLeft, User, BarChart3, Zap } from 'lucide-react';
+import { Check, Trophy, Star, ArrowRight, Lock, ChevronLeft, User, BarChart3, Zap, Package } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
@@ -35,40 +35,40 @@ export default function Home() {
 
   if (showProfile) {
     return (
-      <div className="min-h-screen bg-muted/30 p-4 md:p-8 font-sans">
+      <div className="min-h-screen bg-[#131f24] text-white p-4 md:p-8 font-sans">
         <div className="max-w-md mx-auto">
           <header className="flex items-center gap-4 mb-8">
-            <Button variant="ghost" size="icon" onClick={() => setShowProfile(false)} className="rounded-full">
+            <Button variant="ghost" size="icon" onClick={() => setShowProfile(false)} className="rounded-full text-white hover:bg-white/10">
               <ChevronLeft className="w-6 h-6" />
             </Button>
             <h1 className="text-2xl font-display font-bold">Профиль</h1>
           </header>
 
-          <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border-b-8 border-border/10 mb-6 text-center">
-            <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="bg-[#1f2d33] rounded-[2.5rem] p-8 border-b-8 border-black/20 mb-6 text-center">
+            <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-primary">
               <User className="w-12 h-12 text-primary" />
             </div>
             <h2 className="text-3xl font-display font-bold mb-1">Ученик</h2>
-            <div className="flex items-center justify-center gap-2 text-accent-foreground font-bold bg-accent/10 px-4 py-1 rounded-full w-fit mx-auto">
-              <Star className="w-4 h-4 fill-accent text-accent" />
+            <div className="flex items-center justify-center gap-2 text-accent bg-accent/10 px-4 py-1 rounded-full w-fit mx-auto border border-accent/20">
+              <Star className="w-4 h-4 fill-accent" />
               <span>{userProfile.totalXp} XP</span>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-white p-6 rounded-3xl border-b-4 border-border/10 flex flex-col items-center">
+            <div className="bg-[#1f2d33] p-6 rounded-3xl border-b-4 border-black/20 flex flex-col items-center">
               <Zap className="w-8 h-8 text-primary mb-2" />
               <div className="text-2xl font-display font-bold">{userProfile.levelsCompleted}</div>
               <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Уровней</div>
             </div>
-            <div className="bg-white p-6 rounded-3xl border-b-4 border-border/10 flex flex-col items-center">
+            <div className="bg-[#1f2d33] p-6 rounded-3xl border-b-4 border-black/20 flex flex-col items-center">
               <BarChart3 className="w-8 h-8 text-success mb-2" />
               <div className="text-2xl font-display font-bold">{userProfile.accuracy}%</div>
               <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Точность</div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-3xl border-b-4 border-border/10">
+          <div className="bg-[#1f2d33] p-6 rounded-3xl border-b-4 border-black/20">
             <h3 className="text-lg font-display font-bold mb-4 flex items-center gap-2">
               <Trophy className="w-5 h-5 text-accent" />
               Статистика
@@ -91,56 +91,74 @@ export default function Home() {
 
   if (currentLevelId === null) {
     return (
-      <div className="min-h-screen bg-muted/30 p-8 font-sans">
-        <div className="max-w-2xl mx-auto">
-          <header className="mb-12 flex justify-between items-center">
-            <div className="text-left">
-              <h1 className="text-4xl font-display font-bold text-foreground">Додзё</h1>
-              <p className="text-muted-foreground">Выбери свой путь</p>
+      <div className="min-h-screen bg-[#131f24] text-white font-sans overflow-x-hidden">
+        {/* Duolingo Sticky Header */}
+        <header className="sticky top-0 z-50 bg-[#131f24] border-b-2 border-[#37464f] p-4">
+          <div className="max-w-2xl mx-auto flex justify-between items-center">
+            <div className="flex items-center gap-4">
+               <div className="flex items-center gap-2 bg-[#1f2d33] px-3 py-1.5 rounded-xl border-b-2 border-black/20">
+                  <Zap className="w-5 h-5 text-primary fill-primary" />
+                  <span className="font-bold">{userProfile.levelsCompleted}</span>
+               </div>
+               <div className="flex items-center gap-2 bg-[#1f2d33] px-3 py-1.5 rounded-xl border-b-2 border-black/20 text-accent">
+                  <Star className="w-5 h-5 fill-accent" />
+                  <span className="font-bold">{userProfile.totalXp}</span>
+               </div>
             </div>
             <Button 
               variant="outline" 
-              className="rounded-2xl h-14 w-14 p-0 border-b-4 border-border shadow-sm bg-white"
+              className="rounded-xl h-10 w-10 p-0 border-b-2 border-black/20 bg-[#1f2d33] text-white border-[#37464f]"
               onClick={() => setShowProfile(true)}
             >
-              <User className="w-6 h-6 text-primary" />
+              <User className="w-5 h-5" />
             </Button>
-          </header>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {levels.map((level) => (
-              <motion.button
-                key={level.id}
-                whileHover={level.isUnlocked ? { scale: 1.05 } : {}}
-                whileTap={level.isUnlocked ? { scale: 0.95 } : {}}
-                onClick={() => startLevel(level.id)}
-                disabled={!level.isUnlocked}
-                className={`
-                  relative aspect-square rounded-[2rem] p-6 flex flex-col items-center justify-center gap-4 transition-all border-b-[8px]
-                  ${level.isUnlocked 
-                    ? 'bg-white border-border/20 shadow-lg cursor-pointer' 
-                    : 'bg-muted/50 border-transparent opacity-60 cursor-not-allowed'}
-                  ${level.isCompleted ? 'ring-4 ring-success ring-offset-4' : ''}
-                `}
-              >
-                <div className={`p-4 rounded-full ${level.isCompleted ? 'bg-success/20' : 'bg-primary/10'}`}>
-                  {level.isUnlocked ? (
-                    level.isCompleted ? (
-                      <Check className="w-8 h-8 text-success" strokeWidth={3} />
-                    ) : (
-                      <Star className={`w-8 h-8 ${level.isUnlocked ? 'text-primary fill-primary' : 'text-muted'}`} />
-                    )
-                  ) : (
-                    <Lock className="w-8 h-8 text-muted-foreground" />
-                  )}
-                </div>
-                <div className="text-center">
-                  <span className="font-display font-bold text-lg block">{level.title}</span>
-                  <span className="text-[10px] font-bold text-muted-foreground uppercase">До {level.range[1]}</span>
-                </div>
-              </motion.button>
-            ))}
           </div>
+        </header>
+
+        {/* Level Path */}
+        <div className="max-w-md mx-auto py-12 px-4 flex flex-col items-center relative">
+          {levels.map((level, index) => {
+            // Duolingo Snake Path Logic
+            const offset = Math.sin(index * 0.8) * 60;
+            
+            return (
+              <div key={level.id} className="mb-8 last:mb-24 relative group" style={{ transform: `translateX(${offset}px)` }}>
+                {/* Connecting Line */}
+                {index < levels.length - 1 && (
+                   <div className="absolute left-1/2 top-full w-2 h-12 -translate-x-1/2 bg-[#37464f] -z-10" />
+                )}
+
+                <motion.button
+                  whileHover={level.isUnlocked ? { scale: 1.1 } : {}}
+                  whileTap={level.isUnlocked ? { scale: 0.9 } : {}}
+                  onClick={() => startLevel(level.id)}
+                  disabled={!level.isUnlocked}
+                  className={`
+                    relative w-20 h-20 rounded-full flex items-center justify-center transition-all border-b-8
+                    ${level.isUnlocked 
+                      ? level.isCompleted 
+                        ? 'bg-success border-[#388e3c] text-white' 
+                        : 'bg-primary border-[#1899d6] text-white'
+                      : 'bg-[#37464f] border-[#222d33] text-[#52656d]'}
+                  `}
+                >
+                  {level.type === 'exercise' && (
+                    level.isCompleted ? <Check className="w-8 h-8" strokeWidth={4} /> : <Star className="w-8 h-8 fill-current" />
+                  )}
+                  {level.type === 'chest' && <Package className="w-8 h-8" />}
+                  {level.type === 'trophy' && <Trophy className="w-8 h-8" />}
+
+                  {/* Active Tooltip */}
+                  {level.isUnlocked && !level.isCompleted && (
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-[#202f36] text-white text-xs font-bold px-3 py-2 rounded-xl border-2 border-[#37464f] whitespace-nowrap animate-bounce">
+                      НАЧАТЬ
+                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#202f36] rotate-45 border-r-2 border-b-2 border-[#37464f]" />
+                    </div>
+                  )}
+                </motion.button>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -148,39 +166,38 @@ export default function Home() {
 
   if (isLevelCompleted) {
     return (
-      <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4 font-sans">
+      <div className="min-h-screen bg-[#131f24] flex items-center justify-center p-4 font-sans text-white">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          className="bg-white rounded-[2.5rem] shadow-2xl border-b-[10px] border-border/10 p-10 max-w-md w-full text-center"
+          className="bg-[#1f2d33] rounded-[2.5rem] shadow-2xl border-b-[10px] border-black/20 p-10 max-w-md w-full text-center"
         >
           <div className="mb-8 relative inline-block">
-            <motion.div 
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", damping: 12, stiffness: 200 }}
-              className="bg-accent/10 p-8 rounded-full"
-            >
-              <Trophy className="w-20 h-20 text-accent" />
-            </motion.div>
+             <motion.div 
+               initial={{ scale: 0 }}
+               animate={{ scale: 1 }}
+               transition={{ type: "spring", damping: 10, stiffness: 100 }}
+             >
+               <Trophy className="w-24 h-24 text-accent fill-accent/10" />
+             </motion.div>
           </div>
 
-          <h1 className="text-4xl font-display font-bold text-foreground mb-2">Уровень пройден!</h1>
-          <p className="text-muted-foreground mb-8 text-lg font-medium">Ты отлично справился!</p>
+          <h1 className="text-4xl font-display font-bold mb-2">Отлично!</h1>
+          <p className="text-muted-foreground mb-8 text-lg">Уровень {currentLevelId} пройден</p>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-[#E8F5E9] p-6 rounded-3xl border-b-4 border-[#C8E6C9] flex flex-col items-center">
-              <div className="text-4xl font-display font-bold text-[#2E7D32] mb-1">{stats.correct}</div>
-              <div className="text-[10px] font-bold text-[#4CAF50] uppercase tracking-widest">ВЕРНО</div>
+            <div className="bg-[#131f24] p-6 rounded-3xl border-b-4 border-black/20 flex flex-col items-center">
+              <div className="text-4xl font-display font-bold text-success mb-1">{stats.correct}</div>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">ВЕРНО</div>
             </div>
-            <div className="bg-[#FFEBEE] p-6 rounded-3xl border-b-4 border-[#FFCDD2] flex flex-col items-center">
-              <div className="text-4xl font-display font-bold text-[#C62828] mb-1">{stats.wrong}</div>
-              <div className="text-[10px] font-bold text-[#EF5350] uppercase tracking-widest">ОШИБКИ</div>
+            <div className="bg-[#131f24] p-6 rounded-3xl border-b-4 border-black/20 flex flex-col items-center">
+              <div className="text-4xl font-display font-bold text-destructive mb-1">{stats.wrong}</div>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">ОШИБКИ</div>
             </div>
-            <div className="col-span-2 bg-[#FFF8E1] p-6 rounded-3xl border-b-4 border-[#FFECB3] flex items-center justify-between px-10">
+            <div className="col-span-2 bg-[#131f24] p-6 rounded-3xl border-b-4 border-black/20 flex items-center justify-between px-10">
               <div className="text-left">
-                <div className="text-[10px] font-bold text-[#FFA000] uppercase tracking-widest mb-1">Очки опыта</div>
-                <div className="text-3xl font-display font-bold text-[#FF8F00]">+{stats.correct * 10} XP</div>
+                <div className="text-[10px] font-bold text-accent uppercase tracking-widest mb-1">Очки опыта</div>
+                <div className="text-3xl font-display font-bold text-white">+{stats.correct * 10} XP</div>
               </div>
               <Star className="w-10 h-10 text-accent fill-accent" />
             </div>
@@ -196,7 +213,7 @@ export default function Home() {
             </Button>
             <Button 
               variant="ghost"
-              className="w-full h-12 text-muted-foreground font-bold uppercase tracking-widest"
+              className="w-full h-12 text-[#52656d] font-bold uppercase tracking-widest"
               onClick={exitToMenu}
             >
               В меню
@@ -211,7 +228,7 @@ export default function Home() {
 
   return (
     <div 
-      className="min-h-screen bg-muted/30 flex flex-col font-sans"
+      className="min-h-screen bg-[#131f24] flex flex-col font-sans text-white"
       onKeyDown={(e) => feedback === 'incorrect' && e.key === 'Enter' && skipAfterError()}
     >
       <header className="px-4 py-8 max-w-md mx-auto w-full">
@@ -219,16 +236,16 @@ export default function Home() {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="rounded-full text-muted-foreground hover:bg-white"
+            className="rounded-full text-[#52656d] hover:bg-white/10"
             onClick={exitToMenu}
           >
-            <ChevronLeft className="w-6 h-6" />
+            <X className="w-6 h-6" />
           </Button>
           <div className="flex-1">
-            <Progress value={progressValue} className="h-4 bg-white border border-border/50 shadow-inner rounded-full" />
+            <Progress value={progressValue} className="h-4 bg-[#37464f] border-none shadow-none rounded-full" />
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full font-bold text-sm">
-            <Star className="w-4 h-4 text-accent fill-accent" />
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-accent/10 text-accent rounded-full font-bold text-sm border border-accent/20">
+            <Star className="w-4 h-4 fill-accent" />
             <span>{stats.correct * 10}</span>
           </div>
         </div>
@@ -242,9 +259,9 @@ export default function Home() {
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.9 }}
-              className="bg-white rounded-[2.5rem] shadow-xl border-b-[10px] border-border/20 p-14 text-center"
+              className="bg-[#1f2d33] rounded-[2.5rem] shadow-xl border-b-[10px] border-black/20 p-14 text-center"
             >
-              <div className="text-8xl font-display font-bold text-foreground tracking-tight flex items-center justify-center gap-6">
+              <div className="text-8xl font-display font-bold text-white tracking-tight flex items-center justify-center gap-6">
                 <span>{currentProblem?.a}</span>
                 <span className="text-muted-foreground/30 font-light">×</span>
                 <span>{currentProblem?.b}</span>
@@ -274,6 +291,7 @@ export default function Home() {
                disabled={feedback === 'correct'}
                isSuccess={feedback === 'correct'}
                placeholder="?"
+               className="bg-transparent text-white border-b-[#37464f] focus:border-b-primary"
              />
            )}
         </div>
@@ -310,4 +328,24 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+function X(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  )
 }

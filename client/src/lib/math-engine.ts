@@ -13,22 +13,38 @@ export type Level = {
   isUnlocked: boolean;
   isCompleted: boolean;
   range: [number, number];
+  type: 'exercise' | 'chest' | 'trophy';
 };
 
 const PROBLEMS_PER_LEVEL = 10;
 
-const DEFAULT_LEVELS: Level[] = [
-  { id: 1, title: 'Уровень 1', isUnlocked: true, isCompleted: false, range: [1, 3] },
-  { id: 2, title: 'Уровень 2', isUnlocked: false, isCompleted: false, range: [1, 5] },
-  { id: 3, title: 'Уровень 3', isUnlocked: false, isCompleted: false, range: [2, 7] },
-  { id: 4, title: 'Уровень 4', isUnlocked: false, isCompleted: false, range: [2, 9] },
-  { id: 5, title: 'Уровень 5', isUnlocked: false, isCompleted: false, range: [3, 10] },
-  { id: 6, title: 'Уровень 6', isUnlocked: false, isCompleted: false, range: [5, 12] },
-  { id: 7, title: 'Уровень 7', isUnlocked: false, isCompleted: false, range: [8, 15] },
-  { id: 8, title: 'Уровень 8', isUnlocked: false, isCompleted: false, range: [10, 18] },
-  { id: 9, title: 'Уровень 9', isUnlocked: false, isCompleted: false, range: [12, 20] },
-  { id: 10, title: 'Уровень 10', isUnlocked: false, isCompleted: false, range: [1, 20] },
-];
+const generateLevels = (): Level[] => {
+  return Array.from({ length: 50 }, (_, i) => {
+    const id = i + 1;
+    let range: [number, number] = [1, 9];
+    
+    // Gradual difficulty increase
+    if (id <= 5) range = [1, 3 + id];
+    else if (id <= 10) range = [2, 10];
+    else if (id <= 20) range = [3, 12];
+    else if (id <= 30) range = [5, 15];
+    else if (id <= 40) range = [8, 18];
+    else range = [1, 20];
+
+    let type: Level['type'] = 'exercise';
+    if (id % 5 === 0) type = 'chest';
+    if (id % 10 === 0) type = 'trophy';
+
+    return {
+      id,
+      title: `Уровень ${id}`,
+      isUnlocked: id === 1,
+      isCompleted: false,
+      range,
+      type
+    };
+  });
+};
 
 export function useMathTrainer() {
   const [userProfile, setUserProfile] = useState(() => {
@@ -45,8 +61,19 @@ export function useMathTrainer() {
 
   const [levels, setLevels] = useState<Level[]>(() => {
     const saved = localStorage.getItem('math-dojo-levels');
-    if (saved) return JSON.parse(saved);
-    return DEFAULT_LEVELS;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // If we upgraded from 10 to 50, merge
+      if (parsed.length < 50) {
+        const fullList = generateLevels();
+        return fullList.map(l => {
+          const existing = parsed.find((p: Level) => p.id === l.id);
+          return existing ? { ...l, ...existing } : l;
+        });
+      }
+      return parsed;
+    }
+    return generateLevels();
   });
 
   const [currentLevelId, setCurrentLevelId] = useState<number | null>(null);
