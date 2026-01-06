@@ -128,21 +128,21 @@ export default function Home() {
 
                 <motion.button
                   whileHover={level.isUnlocked ? { scale: 1.05 } : {}}
-                  whileTap={level.isUnlocked ? { scale: 0.9, y: 4 } : {}}
+                  whileTap={level.isUnlocked ? { scale: 1, y: 6 } : {}}
                   onClick={() => startLevel(level.id)}
                   disabled={!level.isUnlocked}
                   className={`
-                    relative w-20 h-20 rounded-full flex items-center justify-center transition-all border-b-8
+                    relative w-20 h-20 rounded-full flex items-center justify-center transition-all duration-75
                     ${level.isUnlocked 
                       ? level.isCompleted 
-                        ? 'bg-[#58cc02] border-[#46a302] text-white' 
-                        : 'bg-[#1cb0f6] border-[#1899d6] text-white'
-                      : 'bg-[#37464f] border-[#222d33] text-[#52656d]'}
+                        ? 'bg-[#58cc02] text-white shadow-[0_8px_0_0_#46a302] active:shadow-[0_2px_0_0_#46a302]' 
+                        : 'bg-[#1cb0f6] text-white shadow-[0_8px_0_0_#1899d6] active:shadow-[0_2px_0_0_#1899d6]'
+                      : 'bg-[#37464f] text-[#52656d] shadow-[0_8px_0_0_#222d33]'}
                   `}
                 >
                   {/* Glossy highlight effect on circles */}
                   {level.isUnlocked && (
-                    <div className="absolute top-1.5 left-3 right-3 h-2 bg-white/30 rounded-full pointer-events-none" />
+                    <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-[60%] h-2.5 bg-white/25 rounded-full pointer-events-none" />
                   )}
 
                   {level.type === 'exercise' && (

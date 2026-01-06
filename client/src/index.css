@@ -100,26 +100,37 @@
 
 @layer utilities {
   .btn-3d {
-    @apply transition-all duration-100 active:translate-y-[6px] active:shadow-none relative overflow-hidden;
+    @apply transition-all duration-75 active:translate-y-[6px] relative overflow-hidden;
     box-shadow: 0 8px 0 0 currentColor;
     border-radius: 1.25rem;
+  }
+  
+  .btn-3d:active {
+    box-shadow: 0 2px 0 0 currentColor;
   }
   
   /* Highlight effect for 3D buttons */
   .btn-3d::before {
     content: "";
-    @apply absolute top-1.5 left-3 right-3 h-2 bg-white/20 rounded-full pointer-events-none;
+    @apply absolute top-1.5 left-3 right-3 h-2.5 bg-white/25 rounded-full pointer-events-none;
   }
 
   .btn-3d-primary {
-    @apply bg-primary text-primary-foreground;
-    color: hsl(195 90% 35%); /* Shadow color override */
+    @apply bg-[#1cb0f6] text-white;
+    color: #1899d6; /* Shadow color */
+    box-shadow: 0 8px 0 0 #1899d6;
+  }
+  .btn-3d-primary:active {
+    box-shadow: 0 2px 0 0 #1899d6;
   }
 
   .btn-3d-success {
     @apply bg-[#58cc02] text-white;
     color: #46a302; /* Shadow color */
     box-shadow: 0 8px 0 0 #46a302;
+  }
+  .btn-3d-success:active {
+    box-shadow: 0 2px 0 0 #46a302;
   }
   
   .btn-3d-success::before {
@@ -130,5 +141,8 @@
     @apply bg-[#ff4b4b] text-white;
     color: #d33131; /* Shadow color */
     box-shadow: 0 8px 0 0 #d33131;
+  }
+  .btn-3d-destructive:active {
+    box-shadow: 0 2px 0 0 #d33131;
   }
 }
