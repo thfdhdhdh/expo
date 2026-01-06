@@ -132,10 +132,10 @@ export default function Home() {
                 <AnimatePresence>
                   {isSelected && (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.9, y: 10, x: '-50%' }}
+                      initial={{ opacity: 0, scale: 0.9, y: -10, x: '-50%' }}
                       animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
-                      exit={{ opacity: 0, scale: 0.9, y: 10, x: '-50%' }}
-                      className="absolute bottom-full left-1/2 mb-6 z-50 bg-white rounded-2xl p-4 min-w-[240px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-[#e5e5e5]"
+                      exit={{ opacity: 0, scale: 0.9, y: -10, x: '-50%' }}
+                      className="absolute top-full left-1/2 mt-6 z-50 bg-white rounded-2xl p-4 min-w-[240px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-[#e5e5e5]"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <h3 className="text-[#afafaf] font-bold text-xs mb-3 uppercase tracking-wider text-center">Уровень {level.id}</h3>
@@ -145,8 +145,8 @@ export default function Home() {
                       >
                         Начать: +10 Опыта
                       </button>
-                      {/* Popover Tail */}
-                      <div className="absolute top-[calc(100%-10px)] left-1/2 -translate-x-1/2 w-5 h-5 bg-white rotate-45 border-r-2 border-b-2 border-[#e5e5e5] z-[-1]" />
+                      {/* Popover Tail (Now at the top) */}
+                      <div className="absolute bottom-[calc(100%-10px)] left-1/2 -translate-x-1/2 w-5 h-5 bg-white rotate-45 border-l-2 border-t-2 border-[#e5e5e5] z-[-1]" />
                     </motion.div>
                   )}
                 </AnimatePresence>
