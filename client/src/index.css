@@ -93,13 +93,9 @@
     transform: translateZ(0);
   }
 
-  /* Interaction on HOVER as requested */
-  .btn-3d-base:hover {
-    transform: translateY(4px);
-  }
-
   .btn-3d-base:active {
-    transform: translateY(6px);
+    transform: translateY(4px);
+    box-shadow: none;
   }
 
   /* Macaw (Blue) */
@@ -109,10 +105,7 @@
     box-shadow: 0 4px 0 0 rgb(var(--color-macaw-dark));
   }
   .btn-macaw:hover {
-    box-shadow: 0 0px 0 0 rgb(var(--color-macaw-dark));
-  }
-  .btn-macaw:active {
-    box-shadow: 0 -2px 0 0 rgb(var(--color-macaw-dark));
+    filter: brightness(1.1);
   }
 
   /* Tree Frog (Green) */
@@ -122,10 +115,7 @@
     box-shadow: 0 4px 0 0 rgb(var(--color-tree-frog-dark));
   }
   .btn-tree-frog:hover {
-    box-shadow: 0 0px 0 0 rgb(var(--color-tree-frog-dark));
-  }
-  .btn-tree-frog:active {
-    box-shadow: 0 -2px 0 0 rgb(var(--color-tree-frog-dark));
+    filter: brightness(1.1);
   }
 
   /* Fire Ant (Red) */
@@ -135,48 +125,31 @@
     box-shadow: 0 4px 0 0 rgb(var(--color-fire-ant-dark));
   }
   .btn-fire-ant:hover {
-    box-shadow: 0 0px 0 0 rgb(var(--color-fire-ant-dark));
-  }
-  .btn-fire-ant:active {
-    box-shadow: 0 -2px 0 0 rgb(var(--color-fire-ant-dark));
+    filter: brightness(1.1);
   }
 
   /* Level Dots (Circles) */
   .level-dot {
-    @apply relative w-20 h-20 rounded-full flex items-center justify-center overflow-hidden;
+    @apply relative w-20 h-20 rounded-full flex items-center justify-center;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-  }
-
-  /* 3D Highlight for circles */
-  .level-dot::before {
-    content: "";
-    @apply absolute top-1.5 left-3 right-3 h-2.5 bg-white/25 rounded-full pointer-events-none z-10;
   }
 
   .level-dot-active {
     background-color: rgb(var(--color-macaw));
     box-shadow: 0 8px 0 0 rgb(var(--color-macaw-dark));
   }
-  .level-dot-active:hover {
+  .level-dot-active:active {
     transform: translateY(4px);
     box-shadow: 0 4px 0 0 rgb(var(--color-macaw-dark));
-  }
-  .level-dot-active:active {
-    transform: translateY(6px);
-    box-shadow: 0 2px 0 0 rgb(var(--color-macaw-dark));
   }
 
   .level-dot-completed {
     background-color: rgb(var(--color-tree-frog));
     box-shadow: 0 8px 0 0 rgb(var(--color-tree-frog-dark));
   }
-  .level-dot-completed:hover {
+  .level-dot-completed:active {
     transform: translateY(4px);
     box-shadow: 0 4px 0 0 rgb(var(--color-tree-frog-dark));
-  }
-  .level-dot-completed:active {
-    transform: translateY(6px);
-    box-shadow: 0 2px 0 0 rgb(var(--color-tree-frog-dark));
   }
 
   .level-dot-locked {

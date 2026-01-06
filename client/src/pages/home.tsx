@@ -2,7 +2,7 @@ import { useMathTrainer } from '@/lib/math-engine';
 import { NumberInput } from '@/components/ui/number-input';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Check, Trophy, Star, ArrowRight, Lock, ChevronLeft, User, BarChart3, Zap, Package } from 'lucide-react';
+import { Check, Trophy, Star, ArrowRight, Lock, ChevronLeft, User, BarChart3, Zap, Package, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
@@ -25,6 +25,7 @@ export default function Home() {
   } = useMathTrainer();
   
   const [showProfile, setShowProfile] = useState(false);
+  const [selectedLevelId, setSelectedLevelId] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -32,6 +33,10 @@ export default function Home() {
       setTimeout(() => inputRef.current?.focus(), 10);
     }
   }, [feedback, currentProblem, isLevelCompleted, currentLevelId]);
+
+  const handleGlobalClick = () => {
+    setSelectedLevelId(null);
+  };
 
   if (showProfile) {
     return (
@@ -91,7 +96,7 @@ export default function Home() {
 
   if (currentLevelId === null) {
     return (
-      <div className="min-h-screen bg-[#131f24] text-white font-sans overflow-x-hidden">
+      <div className="min-h-screen bg-[#131f24] text-white font-sans overflow-x-hidden" onClick={handleGlobalClick}>
         {/* Duolingo Sticky Header */}
         <header className="sticky top-0 z-50 bg-[#131f24] border-b-2 border-[#37464f] p-4">
           <div className="max-w-2xl mx-auto flex justify-between items-center">
@@ -108,7 +113,7 @@ export default function Home() {
             <Button 
               variant="outline" 
               className="rounded-xl h-10 w-10 p-0 border-b-2 border-black/20 bg-[#1f2d33] text-white border-[#37464f]"
-              onClick={() => setShowProfile(true)}
+              onClick={(e) => { e.stopPropagation(); setShowProfile(true); }}
             >
               <User className="w-5 h-5" />
             </Button>
@@ -119,17 +124,40 @@ export default function Home() {
         <div className="max-w-md mx-auto py-12 px-4 flex flex-col items-center relative">
           {levels.map((level, index) => {
             const offset = Math.sin(index * 0.8) * 60;
+            const isSelected = selectedLevelId === level.id;
             
             return (
-              <div key={level.id} className="mb-8 last:mb-24 relative group" style={{ transform: `translateX(${offset}px)` }}>
-                {index < levels.length - 1 && (
-                   <div className="absolute left-1/2 top-full w-2 h-12 -translate-x-1/2 bg-[#37464f] -z-10" />
-                )}
+              <div key={level.id} className="mb-10 last:mb-24 relative" style={{ transform: `translateX(${offset}px)` }}>
+                {/* Popover Menu */}
+                <AnimatePresence>
+                  {isSelected && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9, y: 10, x: '-50%' }}
+                      animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
+                      exit={{ opacity: 0, scale: 0.9, y: 10, x: '-50%' }}
+                      className="absolute bottom-full left-1/2 mb-4 z-50 bg-white rounded-2xl p-4 min-w-[220px] shadow-2xl border-2 border-[#e5e5e5]"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <h3 className="text-[#afafaf] font-bold text-xs mb-3 uppercase tracking-wider">Урок {level.id}</h3>
+                      <button
+                        className="w-full bg-[#1cb0f6] text-white font-bold py-4 rounded-2xl border-b-4 border-[#1899d6] active:translate-y-1 active:border-b-0 transition-all uppercase text-sm tracking-wide"
+                        onClick={() => startLevel(level.id)}
+                      >
+                        Начать: +10 Опыта
+                      </button>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 -mt-2 border-r-2 border-b-2 border-[#e5e5e5]" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <motion.button
-                  whileHover={level.isUnlocked ? { y: 4 } : {}}
                   whileTap={level.isUnlocked ? { y: 6 } : {}}
-                  onClick={() => startLevel(level.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (level.isUnlocked) {
+                      setSelectedLevelId(isSelected ? null : level.id);
+                    }
+                  }}
                   disabled={!level.isUnlocked}
                   className={`
                     level-dot
@@ -145,13 +173,6 @@ export default function Home() {
                   )}
                   {level.type === 'chest' && <Package className="w-8 h-8" />}
                   {level.type === 'trophy' && <Trophy className="w-8 h-8" />}
-
-                  {level.isUnlocked && !level.isCompleted && (
-                    <div className="absolute -top-14 left-1/2 -translate-x-1/2 bg-[#ffffff] text-[#1cb0f6] text-xs font-bold px-3 py-2 rounded-xl border-2 border-[#e5e5e5] whitespace-nowrap animate-bounce shadow-lg">
-                      НАЧАТЬ
-                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 border-r-2 border-b-2 border-[#e5e5e5]" />
-                    </div>
-                  )}
                 </motion.button>
               </div>
             );
@@ -202,7 +223,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-3">
             <Button 
-              className="w-full h-16 text-xl font-bold rounded-2xl btn-3d btn-3d-success uppercase tracking-widest"
+              className="w-full h-16 text-xl font-bold rounded-2xl btn-3d-base btn-tree-frog uppercase tracking-widest"
               onClick={() => startLevel(currentLevelId + 1)}
             >
               Дальше
@@ -236,7 +257,7 @@ export default function Home() {
             className="rounded-full text-[#52656d] hover:bg-white/10"
             onClick={exitToMenu}
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6" strokeWidth={3} />
           </Button>
           <div className="flex-1">
             <div className="h-4 bg-[#37464f] rounded-full overflow-hidden">
@@ -333,24 +354,4 @@ export default function Home() {
       </main>
     </div>
   );
-}
-
-function X(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
-  )
 }
