@@ -47,63 +47,41 @@
 
 /* Duolingo-esque Vivid & Friendly Theme */
 :root {
-  /* Bright White Background */
   --background: 0 0% 100%;
-  --foreground: 215 25% 27%; /* Soft Dark Blue-Grey for text */
-
-  /* Cards - Slight off-white/grey for depth */
+  --foreground: 215 25% 27%;
   --card: 0 0% 100%;
   --card-foreground: 215 25% 27%;
-
-  /* Primary - Duolingo Green-ish/Teal */
-  --primary: 190 85% 45%; 
+  --primary: 195 90% 48%; 
   --primary-foreground: 0 0% 100%;
-  --primary-dark: 190 85% 35%; /* For button shadows/depth */
-
-  /* Secondary - Soft Blue */
+  --primary-dark: 195 90% 38%;
   --secondary: 204 90% 90%;
   --secondary-foreground: 204 90% 35%;
-
-  /* Accent - Yellow/Gold (Stars, Streaks) */
   --accent: 45 100% 55%;
   --accent-foreground: 45 100% 15%;
-
-  /* Success - Bright Green */
-  --success: 145 80% 40%;
+  --success: 140 85% 45%;
   --success-foreground: 0 0% 100%;
-
-  /* Destructive/Error - Soft Red */
   --destructive: 350 85% 60%;
   --destructive-foreground: 0 0% 100%;
-
   --muted: 210 20% 96%;
   --muted-foreground: 215 20% 65%;
-
   --border: 215 20% 90%;
   --input: 215 20% 92%;
-  --ring: 190 85% 45%;
-
+  --ring: 195 90% 48%;
   --radius: 1rem;
 }
 
 .dark {
-  /* Dark Mode adjustments */
   --background: 215 25% 15%;
   --foreground: 215 20% 95%;
-
   --card: 215 25% 20%;
   --card-foreground: 215 20% 95%;
-
-  --primary: 190 85% 50%;
+  --primary: 195 90% 48%;
   --primary-foreground: 0 0% 100%;
-  --primary-dark: 190 85% 40%;
-
+  --primary-dark: 195 90% 38%;
   --secondary: 215 25% 25%;
   --secondary-foreground: 204 90% 80%;
-
   --muted: 215 25% 25%;
   --muted-foreground: 215 20% 70%;
-
   --border: 215 25% 30%;
   --input: 215 25% 30%;
 }
@@ -120,23 +98,37 @@
   }
 }
 
-/* Custom 3D Button Utility */
 @layer utilities {
   .btn-3d {
-    @apply transition-all duration-100 active:translate-y-[4px] active:shadow-none;
-    box-shadow: 0 4px 0 0 currentColor;
+    @apply transition-all duration-100 active:translate-y-[6px] active:shadow-none relative overflow-hidden;
+    box-shadow: 0 8px 0 0 currentColor;
+    border-radius: 1.25rem;
   }
+  
+  /* Highlight effect for 3D buttons */
+  .btn-3d::before {
+    content: "";
+    @apply absolute top-1.5 left-3 right-3 h-2 bg-white/20 rounded-full pointer-events-none;
+  }
+
   .btn-3d-primary {
-    @apply bg-primary text-primary-foreground text-primary-dark;
+    @apply bg-primary text-primary-foreground;
+    color: hsl(195 90% 35%); /* Shadow color override */
   }
+
   .btn-3d-success {
-    color: hsl(var(--success)); /* Shadow color */
-    @apply bg-success text-success-foreground;
-    box-shadow: 0 4px 0 0 hsl(145 80% 30%);
+    @apply bg-[#58cc02] text-white;
+    color: #46a302; /* Shadow color */
+    box-shadow: 0 8px 0 0 #46a302;
   }
+  
+  .btn-3d-success::before {
+    @apply bg-white/30;
+  }
+
   .btn-3d-destructive {
-    color: hsl(var(--destructive)); /* Shadow color */
-    @apply bg-destructive text-destructive-foreground;
-    box-shadow: 0 4px 0 0 hsl(350 85% 45%);
+    @apply bg-[#ff4b4b] text-white;
+    color: #d33131; /* Shadow color */
+    box-shadow: 0 8px 0 0 #d33131;
   }
 }

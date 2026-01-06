@@ -118,41 +118,43 @@ export default function Home() {
         {/* Level Path */}
         <div className="max-w-md mx-auto py-12 px-4 flex flex-col items-center relative">
           {levels.map((level, index) => {
-            // Duolingo Snake Path Logic
             const offset = Math.sin(index * 0.8) * 60;
             
             return (
               <div key={level.id} className="mb-8 last:mb-24 relative group" style={{ transform: `translateX(${offset}px)` }}>
-                {/* Connecting Line */}
                 {index < levels.length - 1 && (
                    <div className="absolute left-1/2 top-full w-2 h-12 -translate-x-1/2 bg-[#37464f] -z-10" />
                 )}
 
                 <motion.button
-                  whileHover={level.isUnlocked ? { scale: 1.1 } : {}}
-                  whileTap={level.isUnlocked ? { scale: 0.9 } : {}}
+                  whileHover={level.isUnlocked ? { scale: 1.05 } : {}}
+                  whileTap={level.isUnlocked ? { scale: 0.9, y: 4 } : {}}
                   onClick={() => startLevel(level.id)}
                   disabled={!level.isUnlocked}
                   className={`
                     relative w-20 h-20 rounded-full flex items-center justify-center transition-all border-b-8
                     ${level.isUnlocked 
                       ? level.isCompleted 
-                        ? 'bg-success border-[#388e3c] text-white' 
-                        : 'bg-primary border-[#1899d6] text-white'
+                        ? 'bg-[#58cc02] border-[#46a302] text-white' 
+                        : 'bg-[#1cb0f6] border-[#1899d6] text-white'
                       : 'bg-[#37464f] border-[#222d33] text-[#52656d]'}
                   `}
                 >
+                  {/* Glossy highlight effect on circles */}
+                  {level.isUnlocked && (
+                    <div className="absolute top-1.5 left-3 right-3 h-2 bg-white/30 rounded-full pointer-events-none" />
+                  )}
+
                   {level.type === 'exercise' && (
-                    level.isCompleted ? <Check className="w-8 h-8" strokeWidth={4} /> : <Star className="w-8 h-8 fill-current" />
+                    level.isCompleted ? <Check className="w-8 h-8" strokeWidth={5} /> : <Star className="w-8 h-8 fill-current" />
                   )}
                   {level.type === 'chest' && <Package className="w-8 h-8" />}
                   {level.type === 'trophy' && <Trophy className="w-8 h-8" />}
 
-                  {/* Active Tooltip */}
                   {level.isUnlocked && !level.isCompleted && (
-                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-[#202f36] text-white text-xs font-bold px-3 py-2 rounded-xl border-2 border-[#37464f] whitespace-nowrap animate-bounce">
+                    <div className="absolute -top-14 left-1/2 -translate-x-1/2 bg-[#ffffff] text-[#1cb0f6] text-xs font-bold px-3 py-2 rounded-xl border-2 border-[#e5e5e5] whitespace-nowrap animate-bounce shadow-lg">
                       НАЧАТЬ
-                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#202f36] rotate-45 border-r-2 border-b-2 border-[#37464f]" />
+                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 border-r-2 border-b-2 border-[#e5e5e5]" />
                     </div>
                   )}
                 </motion.button>
@@ -187,11 +189,11 @@ export default function Home() {
 
           <div className="grid grid-cols-2 gap-4 mb-8">
             <div className="bg-[#131f24] p-6 rounded-3xl border-b-4 border-black/20 flex flex-col items-center">
-              <div className="text-4xl font-display font-bold text-success mb-1">{stats.correct}</div>
+              <div className="text-4xl font-display font-bold text-[#58cc02] mb-1">{stats.correct}</div>
               <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">ВЕРНО</div>
             </div>
             <div className="bg-[#131f24] p-6 rounded-3xl border-b-4 border-black/20 flex flex-col items-center">
-              <div className="text-4xl font-display font-bold text-destructive mb-1">{stats.wrong}</div>
+              <div className="text-4xl font-display font-bold text-[#ff4b4b] mb-1">{stats.wrong}</div>
               <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">ОШИБКИ</div>
             </div>
             <div className="col-span-2 bg-[#131f24] p-6 rounded-3xl border-b-4 border-black/20 flex items-center justify-between px-10">
@@ -205,7 +207,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-3">
             <Button 
-              className="w-full h-16 text-xl font-bold rounded-2xl btn-3d btn-3d-primary uppercase tracking-widest"
+              className="w-full h-16 text-xl font-bold rounded-2xl btn-3d btn-3d-success uppercase tracking-widest"
               onClick={() => startLevel(currentLevelId + 1)}
             >
               Дальше
@@ -242,7 +244,15 @@ export default function Home() {
             <X className="w-6 h-6" />
           </Button>
           <div className="flex-1">
-            <Progress value={progressValue} className="h-4 bg-[#37464f] border-none shadow-none rounded-full" />
+            <div className="h-4 bg-[#37464f] rounded-full overflow-hidden">
+               <motion.div 
+                 initial={{ width: 0 }}
+                 animate={{ width: `${progressValue}%` }}
+                 className="h-full bg-[#58cc02] relative"
+               >
+                 <div className="absolute top-1 left-2 right-2 h-1 bg-white/20 rounded-full" />
+               </motion.div>
+            </div>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1 bg-accent/10 text-accent rounded-full font-bold text-sm border border-accent/20">
             <Star className="w-4 h-4 fill-accent" />
@@ -263,7 +273,7 @@ export default function Home() {
             >
               <div className="text-8xl font-display font-bold text-white tracking-tight flex items-center justify-center gap-6">
                 <span>{currentProblem?.a}</span>
-                <span className="text-muted-foreground/30 font-light">×</span>
+                <span className="text-[#37464f] font-light">×</span>
                 <span>{currentProblem?.b}</span>
               </div>
             </motion.div>
@@ -277,8 +287,8 @@ export default function Home() {
                animate={{ opacity: 1, scale: 1 }}
                className="text-center"
              >
-               <div className="text-[10px] font-bold text-destructive uppercase tracking-[0.2em] mb-2">Правильный ответ</div>
-               <div className="text-7xl font-display font-bold text-success">
+               <div className="text-[10px] font-bold text-[#ff4b4b] uppercase tracking-[0.2em] mb-2">Правильный ответ</div>
+               <div className="text-7xl font-display font-bold text-[#58cc02]">
                  {currentProblem ? currentProblem.a * currentProblem.b : ''}
                </div>
              </motion.div>
@@ -291,7 +301,7 @@ export default function Home() {
                disabled={feedback === 'correct'}
                isSuccess={feedback === 'correct'}
                placeholder="?"
-               className="bg-transparent text-white border-b-[#37464f] focus:border-b-primary"
+               className="bg-transparent text-white border-b-[#37464f] focus:border-b-[#1cb0f6]"
              />
            )}
         </div>
@@ -311,7 +321,7 @@ export default function Home() {
              <Button 
                className="w-full h-16 text-xl font-bold rounded-2xl btn-3d btn-3d-success uppercase tracking-[0.1em] pointer-events-none"
              >
-               <Check className="w-7 h-7 mr-2" strokeWidth={4} />
+               <Check className="w-7 h-7 mr-2" strokeWidth={5} />
                Верно!
              </Button>
           )}
@@ -340,7 +350,7 @@ function X(props: any) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
