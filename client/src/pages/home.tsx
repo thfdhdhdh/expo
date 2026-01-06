@@ -127,22 +127,21 @@ export default function Home() {
                 )}
 
                 <motion.button
-                  whileHover={level.isUnlocked ? { scale: 1.05 } : {}}
-                  whileTap={level.isUnlocked ? { scale: 1, y: 6 } : {}}
+                  whileTap={level.isUnlocked ? { scale: 0.95 } : {}}
                   onClick={() => startLevel(level.id)}
                   disabled={!level.isUnlocked}
                   className={`
-                    relative w-20 h-20 rounded-full flex items-center justify-center transition-all duration-75
+                    level-dot
                     ${level.isUnlocked 
                       ? level.isCompleted 
-                        ? 'bg-[#58cc02] text-white shadow-[0_8px_0_0_#46a302] active:shadow-[0_2px_0_0_#46a302]' 
-                        : 'bg-[#1cb0f6] text-white shadow-[0_8px_0_0_#1899d6] active:shadow-[0_2px_0_0_#1899d6]'
-                      : 'bg-[#37464f] text-[#52656d] shadow-[0_8px_0_0_#222d33]'}
+                        ? 'level-dot-completed' 
+                        : 'level-dot-active'
+                      : 'level-dot-locked'}
                   `}
                 >
                   {/* Glossy highlight effect on circles */}
                   {level.isUnlocked && (
-                    <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-[60%] h-2.5 bg-white/25 rounded-full pointer-events-none" />
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[60%] h-3 bg-white/20 rounded-full pointer-events-none" />
                   )}
 
                   {level.type === 'exercise' && (
@@ -309,7 +308,7 @@ export default function Home() {
         <div className="w-full mt-auto mb-10">
           {feedback === 'none' && (
             <Button 
-              className="w-full h-16 text-xl font-bold rounded-2xl btn-3d btn-3d-primary uppercase tracking-[0.1em]"
+              className="w-full h-16 text-xl font-bold rounded-2xl btn-3d-base btn-macaw uppercase tracking-[0.1em]"
               onClick={checkAnswer}
               disabled={!input}
             >
@@ -319,7 +318,7 @@ export default function Home() {
 
           {feedback === 'correct' && (
              <Button 
-               className="w-full h-16 text-xl font-bold rounded-2xl btn-3d btn-3d-success uppercase tracking-[0.1em] pointer-events-none"
+               className="w-full h-16 text-xl font-bold rounded-2xl btn-3d-base btn-tree-frog uppercase tracking-[0.1em] pointer-events-none"
              >
                <Check className="w-7 h-7 mr-2" strokeWidth={5} />
                Верно!
@@ -328,7 +327,7 @@ export default function Home() {
 
           {feedback === 'incorrect' && (
             <Button 
-              className="w-full h-16 text-xl font-bold rounded-2xl btn-3d btn-3d-destructive uppercase tracking-[0.1em]"
+              className="w-full h-16 text-xl font-bold rounded-2xl btn-3d-base btn-fire-ant uppercase tracking-[0.1em]"
               onClick={skipAfterError}
             >
               Понятно
