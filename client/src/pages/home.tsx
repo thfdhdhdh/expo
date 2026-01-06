@@ -135,17 +135,18 @@ export default function Home() {
                       initial={{ opacity: 0, scale: 0.9, y: 10, x: '-50%' }}
                       animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
                       exit={{ opacity: 0, scale: 0.9, y: 10, x: '-50%' }}
-                      className="absolute bottom-full left-1/2 mb-4 z-50 bg-white rounded-2xl p-4 min-w-[220px] shadow-2xl border-2 border-[#e5e5e5]"
+                      className="absolute bottom-full left-1/2 mb-6 z-50 bg-white rounded-2xl p-4 min-w-[240px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-[#e5e5e5]"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <h3 className="text-[#afafaf] font-bold text-xs mb-3 uppercase tracking-wider">Урок {level.id}</h3>
+                      <h3 className="text-[#afafaf] font-bold text-xs mb-3 uppercase tracking-wider text-center">Уровень {level.id}</h3>
                       <button
-                        className="w-full bg-[#1cb0f6] text-white font-bold py-4 rounded-2xl border-b-4 border-[#1899d6] active:translate-y-1 active:border-b-0 transition-all uppercase text-sm tracking-wide"
+                        className="w-full bg-[#1cb0f6] text-white font-bold py-4 rounded-2xl border-b-4 border-[#1899d6] active:translate-y-1 active:border-b-0 transition-all uppercase text-sm tracking-wide shadow-sm"
                         onClick={() => startLevel(level.id)}
                       >
                         Начать: +10 Опыта
                       </button>
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 -mt-2 border-r-2 border-b-2 border-[#e5e5e5]" />
+                      {/* Popover Tail */}
+                      <div className="absolute top-[calc(100%-10px)] left-1/2 -translate-x-1/2 w-5 h-5 bg-white rotate-45 border-r-2 border-b-2 border-[#e5e5e5] z-[-1]" />
                     </motion.div>
                   )}
                 </AnimatePresence>
