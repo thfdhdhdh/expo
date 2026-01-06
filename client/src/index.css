@@ -93,8 +93,13 @@
     transform: translateZ(0);
   }
 
-  .btn-3d-base:active {
+  /* Interaction on HOVER as requested */
+  .btn-3d-base:hover {
     transform: translateY(4px);
+  }
+
+  .btn-3d-base:active {
+    transform: translateY(6px);
   }
 
   /* Macaw (Blue) */
@@ -103,8 +108,11 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-macaw-dark));
   }
-  .btn-macaw:active {
+  .btn-macaw:hover {
     box-shadow: 0 0px 0 0 rgb(var(--color-macaw-dark));
+  }
+  .btn-macaw:active {
+    box-shadow: 0 -2px 0 0 rgb(var(--color-macaw-dark));
   }
 
   /* Tree Frog (Green) */
@@ -113,8 +121,11 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-tree-frog-dark));
   }
-  .btn-tree-frog:active {
+  .btn-tree-frog:hover {
     box-shadow: 0 0px 0 0 rgb(var(--color-tree-frog-dark));
+  }
+  .btn-tree-frog:active {
+    box-shadow: 0 -2px 0 0 rgb(var(--color-tree-frog-dark));
   }
 
   /* Fire Ant (Red) */
@@ -123,19 +134,32 @@
     color: #fff;
     box-shadow: 0 4px 0 0 rgb(var(--color-fire-ant-dark));
   }
-  .btn-fire-ant:active {
+  .btn-fire-ant:hover {
     box-shadow: 0 0px 0 0 rgb(var(--color-fire-ant-dark));
+  }
+  .btn-fire-ant:active {
+    box-shadow: 0 -2px 0 0 rgb(var(--color-fire-ant-dark));
   }
 
   /* Level Dots (Circles) */
   .level-dot {
-    @apply relative w-20 h-20 rounded-full flex items-center justify-center;
+    @apply relative w-20 h-20 rounded-full flex items-center justify-center overflow-hidden;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  /* 3D Highlight for circles */
+  .level-dot::before {
+    content: "";
+    @apply absolute top-1.5 left-3 right-3 h-2.5 bg-white/25 rounded-full pointer-events-none z-10;
   }
 
   .level-dot-active {
     background-color: rgb(var(--color-macaw));
     box-shadow: 0 8px 0 0 rgb(var(--color-macaw-dark));
+  }
+  .level-dot-active:hover {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 0 rgb(var(--color-macaw-dark));
   }
   .level-dot-active:active {
     transform: translateY(6px);
@@ -145,6 +169,10 @@
   .level-dot-completed {
     background-color: rgb(var(--color-tree-frog));
     box-shadow: 0 8px 0 0 rgb(var(--color-tree-frog-dark));
+  }
+  .level-dot-completed:hover {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 0 rgb(var(--color-tree-frog-dark));
   }
   .level-dot-completed:active {
     transform: translateY(6px);

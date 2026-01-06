@@ -127,6 +127,7 @@ export default function Home() {
                 )}
 
                 <motion.button
+                  whileHover={level.isUnlocked ? { y: 4 } : {}}
                   whileTap={level.isUnlocked ? { y: 6 } : {}}
                   onClick={() => startLevel(level.id)}
                   disabled={!level.isUnlocked}
