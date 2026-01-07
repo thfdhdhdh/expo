@@ -127,7 +127,14 @@ export default function Home() {
             const isSelected = selectedLevelId === level.id;
             
             return (
-              <div key={level.id} className="mb-10 last:mb-24 relative" style={{ transform: `translateX(${offset}px)` }}>
+              <div 
+                key={level.id} 
+                className="mb-10 last:mb-24 relative" 
+                style={{ 
+                  transform: `translateX(${offset}px)`,
+                  zIndex: isSelected ? 100 : levels.length - index 
+                }}
+              >
                 {/* Popover Menu */}
                 <AnimatePresence>
                   {isSelected && (
