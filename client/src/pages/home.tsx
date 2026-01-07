@@ -25,6 +25,7 @@ export default function Home() {
   } = useMathTrainer();
   
   const [showProfile, setShowProfile] = useState(false);
+  const [activeTab, setActiveTab] = useState<'learn' | 'leaderboard'>('learn');
   const [selectedLevelId, setSelectedLevelId] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -96,7 +97,7 @@ export default function Home() {
 
   if (currentLevelId === null) {
     return (
-      <div className="min-h-screen bg-[#131f24] text-white font-sans overflow-x-hidden" onClick={handleGlobalClick}>
+      <div className="min-h-screen bg-[#131f24] text-white font-sans overflow-x-hidden pb-24" onClick={handleGlobalClick}>
         {/* Duolingo Sticky Header */}
         <header className="sticky top-0 z-50 bg-[#131f24] border-b-2 border-[#37464f] p-4">
           <div className="max-w-2xl mx-auto flex justify-between items-center">
@@ -120,72 +121,127 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Level Path */}
-        <div className="max-w-md mx-auto py-12 px-4 flex flex-col items-center relative">
-          {levels.map((level, index) => {
-            const offset = Math.sin(index * 0.8) * 60;
-            const isSelected = selectedLevelId === level.id;
-            
-            return (
-              <div 
-                key={level.id} 
-                className="mb-10 last:mb-24 relative" 
-                style={{ 
-                  transform: `translateX(${offset}px)`,
-                  zIndex: isSelected ? 100 : levels.length - index 
-                }}
-              >
-                {/* Popover Menu */}
-                <AnimatePresence>
-                  {isSelected && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9, y: -10, x: '-50%' }}
-                      animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
-                      exit={{ opacity: 0, scale: 0.9, y: -10, x: '-50%' }}
-                      className="absolute top-full left-1/2 mt-6 z-50 bg-white rounded-2xl p-4 min-w-[240px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-[#e5e5e5]"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <h3 className="text-[#afafaf] font-bold text-xs mb-3 uppercase tracking-wider text-center">Уровень {level.id}</h3>
-                      <button
-                        className="w-full bg-[#1cb0f6] text-white font-bold py-4 rounded-2xl border-b-4 border-[#1899d6] active:translate-y-1 active:border-b-0 transition-all uppercase text-sm tracking-wide shadow-sm"
-                        onClick={() => startLevel(level.id)}
-                      >
-                        Начать: +10 Опыта
-                      </button>
-                      {/* Popover Tail (Now at the top) */}
-                      <div className="absolute bottom-[calc(100%-10px)] left-1/2 -translate-x-1/2 w-5 h-5 bg-white rotate-45 border-l-2 border-t-2 border-[#e5e5e5] z-[-1]" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <motion.button
-                  whileTap={level.isUnlocked ? { y: 6 } : {}}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (level.isUnlocked) {
-                      setSelectedLevelId(isSelected ? null : level.id);
-                    }
-                  }}
-                  disabled={!level.isUnlocked}
-                  className={`
-                    level-dot
-                    ${level.isUnlocked 
-                      ? level.isCompleted 
-                        ? 'level-dot-completed' 
-                        : 'level-dot-active'
-                      : 'level-dot-locked'}
-                  `}
+        {activeTab === 'leaderboard' ? (
+          <div className="max-w-md mx-auto py-8 px-4">
+            <h1 className="text-2xl font-display font-bold mb-6 text-center">Таблица лидеров</h1>
+            <div className="space-y-3">
+              {[
+                { name: 'Дмитрий', xp: 12500, rank: 1, avatar: '🦊' },
+                { name: 'Анна', xp: 11200, rank: 2, avatar: '🐱' },
+                { name: 'Ты', xp: userProfile.totalXp, rank: 3, avatar: '🦉', isUser: true },
+                { name: 'Максим', xp: 8400, rank: 4, avatar: '🐼' },
+                { name: 'Елена', xp: 7200, rank: 5, avatar: '🐨' },
+                { name: 'Иван', xp: 6800, rank: 6, avatar: '🦁' },
+                { name: 'Ольга', xp: 5400, rank: 7, avatar: '🐯' },
+              ].map((leader) => (
+                <div 
+                  key={leader.name}
+                  className={`flex items-center gap-4 p-4 rounded-2xl border-b-4 ${
+                    leader.isUser ? 'bg-primary/20 border-primary/40 ring-2 ring-primary/20' : 'bg-[#1f2d33] border-black/20'
+                  }`}
                 >
-                  {level.type === 'exercise' && (
-                    level.isCompleted ? <Check className="w-8 h-8" strokeWidth={5} /> : <Star className="w-8 h-8 fill-current" />
-                  )}
-                  {level.type === 'chest' && <Package className="w-8 h-8" />}
-                  {level.type === 'trophy' && <Trophy className="w-8 h-8" />}
-                </motion.button>
+                  <div className="w-8 font-bold text-muted-foreground">{leader.rank}</div>
+                  <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl">
+                    {leader.avatar}
+                  </div>
+                  <div className="flex-1 font-bold">{leader.name}</div>
+                  <div className="font-bold text-accent">{leader.xp} XP</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          /* Level Path */
+          <div className="max-w-md mx-auto py-12 px-4 flex flex-col items-center relative">
+            {levels.map((level, index) => {
+              const offset = Math.sin(index * 0.8) * 60;
+              const isSelected = selectedLevelId === level.id;
+              
+              return (
+                <div 
+                  key={level.id} 
+                  className="mb-10 last:mb-24 relative" 
+                  style={{ 
+                    transform: `translateX(${offset}px)`,
+                    zIndex: isSelected ? 100 : levels.length - index 
+                  }}
+                >
+                  {/* Popover Menu */}
+                  <AnimatePresence>
+                    {isSelected && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9, y: -10, x: '-50%' }}
+                        animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
+                        exit={{ opacity: 0, scale: 0.9, y: -10, x: '-50%' }}
+                        className="absolute top-full left-1/2 mt-6 z-50 bg-white rounded-2xl p-4 min-w-[240px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-[#e5e5e5]"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <h3 className="text-[#afafaf] font-bold text-xs mb-3 uppercase tracking-wider text-center">Уровень {level.id}</h3>
+                        <button
+                          className="w-full bg-[#1cb0f6] text-white font-bold py-4 rounded-2xl border-b-4 border-[#1899d6] active:translate-y-1 active:border-b-0 transition-all uppercase text-sm tracking-wide shadow-sm"
+                          onClick={() => startLevel(level.id)}
+                        >
+                          Начать: +10 Опыта
+                        </button>
+                        {/* Popover Tail (Now at the top) */}
+                        <div className="absolute bottom-[calc(100%-10px)] left-1/2 -translate-x-1/2 w-5 h-5 bg-white rotate-45 border-l-2 border-t-2 border-[#e5e5e5] z-[-1]" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <motion.button
+                    whileTap={level.isUnlocked ? { y: 6 } : {}}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (level.isUnlocked) {
+                        setSelectedLevelId(isSelected ? null : level.id);
+                      }
+                    }}
+                    disabled={!level.isUnlocked}
+                    className={`
+                      level-dot
+                      ${level.isUnlocked 
+                        ? level.isCompleted 
+                          ? 'level-dot-completed' 
+                          : 'level-dot-active'
+                        : 'level-dot-locked'}
+                    `}
+                  >
+                    {level.type === 'exercise' && (
+                      level.isCompleted ? <Check className="w-8 h-8" strokeWidth={5} /> : <Star className="w-8 h-8 fill-current" />
+                    )}
+                    {level.type === 'chest' && <Package className="w-8 h-8" />}
+                    {level.type === 'trophy' && <Trophy className="w-8 h-8" />}
+                  </motion.button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Bottom Navigation Bar */}
+        <nav className="fixed bottom-0 left-0 right-0 bg-[#131f24] border-t-2 border-[#37464f] px-6 py-3 z-[200]">
+          <div className="max-w-md mx-auto flex justify-around items-center">
+            <button 
+              onClick={() => setActiveTab('learn')}
+              className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'learn' ? 'text-primary' : 'text-[#52656d]'}`}
+            >
+              <div className={`p-2 rounded-xl transition-all ${activeTab === 'learn' ? 'bg-primary/10 ring-2 ring-primary/20' : ''}`}>
+                <Package className="w-7 h-7" />
               </div>
-            );
-          })}
-        </div>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Обучение</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('leaderboard')}
+              className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'leaderboard' ? 'text-accent' : 'text-[#52656d]'}`}
+            >
+              <div className={`p-2 rounded-xl transition-all ${activeTab === 'leaderboard' ? 'bg-accent/10 ring-2 ring-accent/20' : ''}`}>
+                <Trophy className="w-7 h-7" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Лидеры</span>
+            </button>
+          </div>
+        </nav>
       </div>
     );
   }
