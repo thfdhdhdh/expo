@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Math Trainer",
+    "slug": "math-trainer-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#131f24"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mathtrainer"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#131f24"
+      },
+      "package": "com.mathtrainer"
+    }
+  }
+}
